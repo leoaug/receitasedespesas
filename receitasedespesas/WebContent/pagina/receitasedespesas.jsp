@@ -32,6 +32,17 @@
 		}
 	</script>	
 	
+	<spring:url value="/resources/js/receitasdespesas.js" var="receitasdespesasJS" />		
+	<script type="text/javascript">
+		if (typeof jQuery == 'undefined') {
+		    var script = document.createElement('script');
+		    script.type = "text/javascript";
+		    script.src = "${receitasdespesasJS}";
+		    document.getElementsByTagName('head')[0].appendChild(script);
+		}
+	</script>
+	
+	
 	
 	
 	<title>Página Principal</title>
@@ -108,7 +119,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="${pageContext.request.contextPath}/pagina/receitasedespesas.jsp">Despesas e Receitas</a>
+								<a href="inicioReceitasDespesasControlador.html">Despesas e Receitas</a>
 							</li>
 						</ul>	
 				   </li>
@@ -135,7 +146,7 @@
 	<!-- Começo do body -->
 	<div class="container-fluid">
 
-		<form:form action="processForm" method="post" cssClass="form-inline">
+		<form:form action="processForm.html" method="POST">
 			
 			<div class="panel panel-default">
    				 <div class="panel-heading">Receitas e Despesas</div>
@@ -145,21 +156,22 @@
 	   				 <div class="row">
 	  					<div class="col-sm-4">
 	  						<form:label path="idObjeto">Evento</form:label>
-	  						<form:input path="idObjeto"/>
+	  						<form:input path="idObjeto" cssClass="form-control"/>
 	  					</div>
 	  					<div class="col-sm-8">
 	  						<form:label path="idEvento">Código Evento</form:label>
-	  						<form:input path="idEvento"/>
+	  						<form:input path="idEvento" cssClass="form-control"/>
 	  					</div>
 					 </div>
 	   				 
    				 
    				 	
-   				 	<input type = "submit" name = "action1" value="Action1"/>
-     				<input type = "submit" name = "action2" value="Action2"/> 
-   				 
-   				 
-   				 </div>
+   				 	<input type="submit" name="salvar" value="Salvar" class="btn btn-success"/>
+     				<input type="button" id="botaoajax" value="Ajax"/>
+
+					<div id="result1" />
+
+				</div>
    			</div>
 			
 		

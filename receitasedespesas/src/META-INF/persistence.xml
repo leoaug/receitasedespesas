@@ -14,7 +14,7 @@
 			<property name="hibernate.format_sql" value="true" />
 	
 	
-			 <!--  gerar as tabelas
+			 <!--  gerar as tabelas 
 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
      	 	<property name="javax.persistence.schema-generation.create-source" value="script"/>
         	<property name="javax.persistence.schema-generation.create-script-source" value="META-INF/sql/receitasedespesas.sql" />

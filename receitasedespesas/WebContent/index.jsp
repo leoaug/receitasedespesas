@@ -32,7 +32,15 @@
 		}
 	</script>	
 	
-	
+	<spring:url value="/resources/js/receitasdespesas.js" var="receitasdespesasJS" />
+	<script type="text/javascript">
+		if (typeof jQuery == 'undefined') {
+		    var script = document.createElement('script');
+		    script.type = "text/javascript";
+		    script.src = "${receitasdespesasJS}";
+		    document.getElementsByTagName('head')[0].appendChild(script);
+		}
+	</script>
 	
 	<title>Página Principal</title>
 </head>
@@ -108,7 +116,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="${pageContext.request.contextPath}/pagina/receitasedespesas.jsp">Despesas e Receitas</a>
+								<a href="inicioReceitasDespesasControlador.html">Despesas e Receitas</a>
 							</li>
 						</ul>	
 				   </li>
