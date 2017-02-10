@@ -5,7 +5,7 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:template>
     
-	    <form:form action="processForm.html" method="POST">
+	    <form:form action="processForm.html" method="POST" commandName="receitaDespesa">
 				
 				<div class="panel panel-default">
 	   				 <div class="panel-heading">Receitas e Despesas</div>
@@ -26,16 +26,16 @@
 		   				 <div class="row">
 							  <div class="col-xs-6 col-sm-3">
 							  		<form:label path="listaItemCategoria">Categoria</form:label>
-							  		<form:select path="listaItemCategoria" cssClass="form-control" >
+							  		<form:select id="idItemCategoria" path="listaItemCategoria" cssClass="form-control" >
 							  			 <form:option value="NONE">Selecionar</form:option>
-    									 <form:options items="${listaItemCategoria}"></form:options>
+    									 <form:options items="${listaItemCategoria}"/>
 							  		</form:select>
 							  </div>
 							  <div class="col-xs-6 col-sm-3">
-							  		<form:label path="listaItemCategoria">Sub Categoria</form:label>
-							  		<form:select path="listaItemCategoria" cssClass="form-control" >
+							  		<form:label path="listaItemSubCategoria">Sub Categoria</form:label>
+							  		<form:select path="listaItemSubCategoria" cssClass="form-control" >
 							  			 <form:option value="NONE">Selecionar</form:option>
-    									 <form:options items="${listaItemCategoria}"></form:options>
+    									 <form:options items="${listaItemSubCategoria}"/>
 							  		</form:select>
 		  					  </div>
 							

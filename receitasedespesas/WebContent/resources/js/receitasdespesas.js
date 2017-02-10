@@ -10,6 +10,15 @@ $(document).ready(function(){
 		});
 	});	
 	
+	$('#idItemCategoria').change(function(){
+		$.ajax({
+			type : 'GET' ,
+			url : './listarSubCategoria.html',
+			data: { idLista: this.value }
+		});
+			
+	});
+	
 	$("#dataLancamento").datepicker();
 });
 

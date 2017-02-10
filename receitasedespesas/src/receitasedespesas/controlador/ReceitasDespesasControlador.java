@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,13 +29,16 @@ public class ReceitasDespesasControlador {
 
 	@RequestMapping(value = "/inicioReceitasDespesasControlador", method = RequestMethod.GET)
 	public ModelAndView inicioReceitasDespesasControlador(ModelMap modelMap) {
-		
-		Map<Integer,String> listas = new LinkedHashMap<Integer,String>();
-		for(Lista lista  :	listaRepositorio.findAll()){
-			listas.put(lista.getId(), lista.getDescricao());
+	
+		Map<Integer,String> listasItens = new LinkedHashMap<Integer,String>();
+		for(ListaItem listaItem  :	listaItemRepositorio.findAll()){
+			listasItens.put(listaItem.getId(), listaItem.getDescricao());
 		}	
-		modelMap.addAttribute("listaItemCategoria", listas);
-		return new ModelAndView("receitasedespesas", "command", new ReceitaDespesa());
+		modelMap.addAttribute("listaItemCategoria", listasItens);		
+		modelMap.addAttribute("listaItemSubCategoria",new LinkedHashMap<Integer,String>());
+		
+		
+		return new ModelAndView("receitasedespesas", "receitaDespesa", new ReceitaDespesa());
 	}
 
 	@RequestMapping(value = "/processForm", params = "salvar", method = {RequestMethod.GET, RequestMethod.POST})
@@ -50,7 +54,7 @@ public class ReceitasDespesasControlador {
 		/**
 		 * voltando para a mesma página
 		 */
-		return new ModelAndView("receitasedespesas", "command",receitaDespesa);
+		return new ModelAndView("receitasedespesas", "receitaDespesa",receitaDespesa);
 	}
 	
 	@RequestMapping(value = "demo1", method = RequestMethod.GET)
@@ -60,6 +64,19 @@ public class ReceitasDespesasControlador {
 		return "testee" ;
 	}
 
+	
+	@RequestMapping(value = "listarSubCategoria", method = RequestMethod.GET)
+	public ModelAndView listarSubCategoria(@RequestParam("idLista") String request , ReceitaDespesa receitaDespesa, ModelMap modelMap){
+		
+		Map<Integer,String> listas = new LinkedHashMap<Integer,String>();
+		listas.put(1,"aeeeeee");
+		
+		modelMap.replace("listaItemSubCategoria", listas);
+		
+		return new ModelAndView("receitasedespesas", "receitaDespesa", receitaDespesa);
+		
+	}
+	
 	@RequestMapping(value = "/processForm", params = "action2", method = RequestMethod.POST)
 	public void action2() {
 		System.out.println("Action2 block called");

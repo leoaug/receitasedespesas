@@ -131,7 +131,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="inicioReceitasDespesasControlador.html">Despesas e Receitas</a>
+								<a href="inicioReceitasDespesasControlador">Despesas e Receitas</a>
 							</li>
 						</ul>	
 				   </li>
