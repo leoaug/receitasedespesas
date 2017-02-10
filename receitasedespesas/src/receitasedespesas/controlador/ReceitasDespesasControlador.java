@@ -5,28 +5,49 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import receitasedespesas.modelo.entidade.Lista;
 import receitasedespesas.modelo.entidade.ListaItem;
 import receitasedespesas.modelo.entidade.ReceitaDespesa;
 import receitasedespesas.modelo.persistencia.repositorio.ListaItemRepositorio;
-import receitasedespesas.modelo.persistencia.repositorio.ListaRepositorio;
+import receitasedespesas.modelo.persistencia.repositorio.ReceitaDespesaRepositorio;
 
 @Controller
 public class ReceitasDespesasControlador {
 
-	@Autowired
-	private ListaRepositorio listaRepositorio;
+
 	
 	@Autowired
 	private ListaItemRepositorio listaItemRepositorio;
+	
+	@Autowired
+	private ReceitaDespesaRepositorio receitaDespesaRepositorio;
 
+	
+	@RequestMapping(value = "/inicioReceitasDespesasControlador", method = RequestMethod.GET)
+	public String index(@ModelAttribute("receitaDespesa") ReceitaDespesa receitaDespesa, ModelMap model) {
+	
+		Map<Integer,String> listasItens = new LinkedHashMap<Integer,String>();
+		for(ListaItem listaItem  :	listaItemRepositorio.findAll()){
+			listasItens.put(listaItem.getId(), listaItem.getDescricao());
+		}	
+		model.addAttribute("listaItemCategoria", listasItens);		
+		model.addAttribute("listaItemSubCategoria",new LinkedHashMap<Integer,String>());
+	
+		model.addAttribute("receitaDespesa", receitaDespesa);
+		
+		return "receitasedespesas";
+	}
+	
+	
+	
+	/*
 	@RequestMapping(value = "/inicioReceitasDespesasControlador", method = RequestMethod.GET)
 	public ModelAndView inicioReceitasDespesasControlador(ModelMap modelMap) {
 	
@@ -40,20 +61,12 @@ public class ReceitasDespesasControlador {
 		
 		return new ModelAndView("receitasedespesas", "receitaDespesa", new ReceitaDespesa());
 	}
+*/
+	@RequestMapping(value = "/salvarReceitaDespesa", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView salvarReceitaDespesa(ReceitaDespesa receitaDespesa, ModelMap modelMap) {
 
-	@RequestMapping(value = "/processForm", params = "salvar", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView salvar(ReceitaDespesa receitaDespesa, ModelMap modelMap) {
-		System.out.println(receitaDespesa.getIdObjeto());
-		
-		//modelMap.addAttribute("idObjeto", receitaDespesa.getIdObjeto());
-		//modelMap.addAttribute("idEvento", receitaDespesa.getIdEvento());
-		
-		listaRepositorio.findAll();
-		
+		receitaDespesaRepositorio.save(receitaDespesa);		
 		modelMap.addAttribute(receitaDespesa);
-		/**
-		 * voltando para a mesma página
-		 */
 		return new ModelAndView("receitasedespesas", "receitaDespesa",receitaDespesa);
 	}
 	

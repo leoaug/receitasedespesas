@@ -5,7 +5,7 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:template>
     
-	    <form:form action="processForm.html" method="POST" commandName="receitaDespesa">
+	    <form:form action="salvarReceitaDespesa" method="POST" commandName="receitaDespesa">
 				
 				<div class="panel panel-default">
 	   				 <div class="panel-heading">Receitas e Despesas</div>
@@ -53,6 +53,69 @@
 							  		<form:input id="dataLancamento" type="text" path="dataLancamento"  cssClass="form-control"/>
 							  </div>
 						</div>
+	   				 
+	   				 	<div class="row">
+							  <div class="col-xs-6 col-sm-3">
+								  	<form:label path="idStatus">Status</form:label>
+								  	<form:select path="idStatus" cssClass="form-control" >
+								  			 <form:option value="NONE">Selecionar</form:option>
+	    									 <form:option label="Ativo" value="1"/>
+	    									 <form:option label="Inativo" value="2"/>
+								  	</form:select>
+							  </div>
+							  
+							  <div class="col-xs-6 col-sm-3">
+							  		<form:label path="idCreditoDebito">Crédito/Débito</form:label>
+								  	<form:select path="idCreditoDebito" cssClass="form-control" >
+								  			 <form:option value="NONE">Selecionar</form:option>
+	    									 <form:option label="Crédito" value="1"/>
+	    									 <form:option label="Débito" value="2"/>
+								  	</form:select>
+							  
+							  </div>
+							  
+							  <div class="col-xs-6 col-sm-3">
+							  		
+							  		<form:label path="comentario">Crédito/Débito</form:label>
+							  		<form:textarea path="comentario" cols="12" rows="5" cssClass="form-control"/>
+							  
+							  </div>
+							  
+						</div>
+	   				 
+	   				 	<div class="row">
+	   				 		<div class="col">
+	   				 			<div class="table-responsive">
+		   				 			<table class="table table-striped table-hover">
+									    <thead>
+									      <tr>
+									        <th>Firstname</th>
+									        <th>Lastname</th>
+									        <th>Email</th>
+									      </tr>
+									    </thead>
+									    <tbody>
+									      <tr>
+									        <td>John</td>
+									        <td>Doe</td>
+									        <td>john@example.com</td>
+									      </tr>
+									      <tr>
+									        <td>Mary</td>
+									        <td>Moe</td>
+									        <td>mary@example.com</td>
+									      </tr>
+									      <tr>
+									        <td>July</td>
+									        <td>Dooley</td>
+									        <td>july@example.com</td>
+									      </tr>
+									    </tbody>
+									</table>
+	   				 			</div>
+	   				 		</div>
+	   				 	
+	   				 	</div>
 	   				 
 	   				 	
 	   				 	<input type="submit" name="salvar" value="Salvar" class="btn btn-success"/>

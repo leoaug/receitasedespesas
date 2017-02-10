@@ -1,5 +1,5 @@
 //var $j = jQuery.noConflict();
-$(document).ready(function(){
+jQuery.noConflict()(function($){
 	$('#botaoajax').click(function(){
 		$.ajax({
 			type : 'GET' ,
