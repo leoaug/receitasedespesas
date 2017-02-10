@@ -23,6 +23,36 @@
 		  					</div>
 						 </div>
 		   				 
+		   				 <div class="row">
+							  <div class="col-xs-6 col-sm-3">
+							  		<form:label path="listaItemCategoria">Categoria</form:label>
+							  		<form:select path="listaItemCategoria" cssClass="form-control" >
+							  			 <form:option value="NONE">Selecionar</form:option>
+    									 <form:options items="${listaItemCategoria}"></form:options>
+							  		</form:select>
+							  </div>
+							  <div class="col-xs-6 col-sm-3">
+							  		<form:label path="listaItemCategoria">Sub Categoria</form:label>
+							  		<form:select path="listaItemCategoria" cssClass="form-control" >
+							  			 <form:option value="NONE">Selecionar</form:option>
+    									 <form:options items="${listaItemCategoria}"></form:options>
+							  		</form:select>
+		  					  </div>
+							
+							  <!-- Add the extra clearfix for only the required viewport -->
+							  <div class="clearfix visible-xs-block"></div>
+							
+							  <div class="col-xs-6 col-sm-3">
+							  		<form:label path="nrValor">Valor</form:label>
+		  							<form:input path="nrValor" cssClass="form-control"/>
+							  		
+							  		
+							  </div>
+							  <div class="col-sm-3 col-sm-1">
+							  		<form:label path="dataLancamento">Data Lançamento</form:label>
+							  		<form:input id="dataLancamento" type="text" path="dataLancamento"  cssClass="form-control"/>
+							  </div>
+						</div>
 	   				 
 	   				 	
 	   				 	<input type="submit" name="salvar" value="Salvar" class="btn btn-success"/>

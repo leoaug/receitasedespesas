@@ -16,8 +16,21 @@
 		}
 	</script>
 	
+	<spring:url value="/resources/js/jquery-ui.js" var="jqueryUIJS" />	
+	<script type="text/javascript">
+		if (typeof jQuery == 'undefined') {
+		    var script = document.createElement('script');
+		    script.type = "text/javascript";
+		    script.src = "${jqueryUIJS}";
+		    document.getElementsByTagName('head')[0].appendChild(script);
+		}
+	</script>
+	
+	
+	
 	
  	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/jquery-ui.css" />
 	
 
 	
