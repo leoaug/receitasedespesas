@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+					   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
+					   http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+					   http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+					   http://www.springframework.org/schema/mvc 
+					   http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<!-- Enable Spring Annotation Configuration -->
+	<context:annotation-config />
+
+	<context:spring-configured/>
+	
+	<mvc:annotation-driven />
+    
+  
+   	 <mvc:resources mapping="/resources/**" location="/resources/" />
+   
+	<!-- 
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	 -->
+	
+	<!-- Scan for all of Spring components such as Spring Service -->
+	<context:component-scan base-package="receitasedespesas.controlador,
+										  receitasedespesas.modelo.persistencia.repositorio" />
+	
+	
+	<jpa:repositories base-package="receitasedespesas.modelo.persistencia.repositorio" />  
+	
+	
+	<!-- Necessary to get the entity manager injected into the factory bean -->
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	
+	<!-- Transaction Manager -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>	
+
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<!--  
+		<property name="persistenceUnitName" value="receitasedespesas"/>
+		-->
+		<property name="dataSource" ref="dataSource" />		
+		<property name="jpaVendorAdapter" >
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="false" />
+		<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/receitasedespesas" />
+		<property name="username" value="root" />
+		<property name="password" value="334863333" />
+	</bean>
+	
+	<!-- 
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	 -->
+</beans>
