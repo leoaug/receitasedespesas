@@ -15,6 +15,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 
 /**
@@ -24,6 +29,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "tb_lista_item", schema = "receitasedespesas")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 public class ListaItem implements Serializable {
 
 	
@@ -260,6 +266,8 @@ public class ListaItem implements Serializable {
 			return false;
 		return true;
 	}
+
+
 	
 	
 	

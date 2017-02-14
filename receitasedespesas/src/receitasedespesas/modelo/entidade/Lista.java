@@ -183,6 +183,14 @@ public class Lista implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Lista [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", status=" + status + ", nativo="
+				+ nativo + ", login=" + login + ", dataCriacao=" + dataCriacao + ", dataAtualizacao=" + dataAtualizacao
+				+ "]";
+	}
+	
 	
 	
 }

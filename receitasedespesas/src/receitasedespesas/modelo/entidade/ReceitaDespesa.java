@@ -15,6 +15,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 /**
  * 
@@ -23,6 +26,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "tb_receita_despesa", schema = "receitasedespesas")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 public class ReceitaDespesa implements Serializable {
 
 	
@@ -275,6 +279,15 @@ public class ReceitaDespesa implements Serializable {
 		} else if (!nrValor.equals(other.nrValor))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "ReceitaDespesa [id=" + id + ", idCreditoDebito=" + idCreditoDebito + ", listaItemCategoria="
+				+ listaItemCategoria + ", listaItemSubCategoria=" + listaItemSubCategoria + ", idObjeto=" + idObjeto
+				+ ", idEvento=" + idEvento + ", idStatus=" + idStatus + ", nrValor=" + nrValor + ", dataLancamento="
+				+ dataLancamento + ", comentario=" + comentario + ", login=" + login + ", dataCriacao=" + dataCriacao
+				+ ", dataAtualizacao=" + dataAtualizacao + "]";
 	}
 	
 	
