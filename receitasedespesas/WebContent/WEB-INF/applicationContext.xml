@@ -19,24 +19,44 @@
 
 	<context:spring-configured/>
 	
-	<mvc:annotation-driven />
+	<mvc:annotation-driven enable-matrix-variables="true" content-negotiation-manager="contentNegotiationManager" />
+    
+    <bean id="contentNegotiationManager"
+    class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+    <property name="defaultContentType" value="application/json" />
+    <property name="favorPathExtension" value="false" />
+    <property name="favorParameter" value="false" />
+    <property name="parameterName" value="mediaType" />
+    <property name="ignoreAcceptHeader" value="false" />
+    <property name="useJaf" value="false" />
+</bean>
     
   
-   	 <mvc:resources mapping="/resources/**" location="/resources/" />
+   	<mvc:resources mapping="/resources/**" location="/resources/" />
    
    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
    		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-   		<property name="prefix" value="/pagina/"/>
+   		<property name="prefix" value="/WEB-INF/pagina/"/>
    		<property name="suffix" value=".jsp"/>
    </bean>
    
-	<!-- 
+   <bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>messages</value>			
+		</property>
+	</bean>
+   
+   
+   
+ 
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
-	 -->
+	
 	
 	<!-- Scan for all of Spring components such as Spring Service -->
 	<context:component-scan base-package="receitasedespesas.controlador,
-										  receitasedespesas.modelo.persistencia.repositorio" />
+										  receitasedespesas.modelo.persistencia.repositorio,
+										  receitasedespesas.validador" />
 	
 	
 	<jpa:repositories base-package="receitasedespesas.modelo.persistencia.repositorio" />  

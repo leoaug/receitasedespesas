@@ -7,55 +7,63 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	
 	<spring:url value="/resources/js/jquery-2.2.4.min.js" var="jqueryJS" />	
-	<script type="text/javascript">
-		if (typeof jQuery == 'undefined') {
-		    var script = document.createElement('script');
-		    script.type = "text/javascript";
-		    script.src = "${jqueryJS}";
-		    document.getElementsByTagName('head')[0].appendChild(script);
-		}
-	</script>
+	<script src="${jqueryJS}"></script>
 	
 	<spring:url value="/resources/js/jquery-ui.js" var="jqueryUIJS" />	
-	<script type="text/javascript">
-		if (typeof jQuery == 'undefined') {
-		    var script = document.createElement('script');
-		    script.type = "text/javascript";
-		    script.src = "${jqueryUIJS}";
-		    document.getElementsByTagName('head')[0].appendChild(script);
-		}
-	</script>
+	<script src="${jqueryUIJS}" > </script>
+		
+	
+	<spring:url value="/resources/js/jquery.dataTables.min.js" var="datatable" />
+	<script src="${datatable}" ></script>
+	
+	<spring:url value="/resources/js/dataTables.buttons.min.js" var="datatableButtons" />
+	<script src="${datatableButtons}" ></script>
+	
+	<spring:url value="/resources/editor/js/dataTables.editor.min.js" var="datatableEditors" />
+	<script src="${datatableEditors}" ></script>
+	
+	<spring:url value="/resources/js/dataTables.select.min.js" var="datatableSelect" />
+	<script src="${datatableSelect}" ></script>
+		
+		
+	
+	<spring:url value="/resources/editor/css/dataTables.editor.css" var="jquerydataTablesEditor" />
+	<link href="${jquerydataTablesEditor}" rel="stylesheet" />
+		
 	
 	
+	<spring:url value="/resources/css/jquery.dataTables.css" var="jquerydataTables" />
+	<link href="${jquerydataTables}" rel="stylesheet" />
+	
+	<spring:url value="/resources/css/jquery.dataTables.min.css" var="jquerydataTablesMin" />
+	<link href="${jquerydataTablesMin}" rel="stylesheet" />
+	
+	<spring:url value="/resources/css/buttons.dataTables.min.css" var="jqueryButtonDataTablesMin" />
+	<link href="${jqueryButtonDataTablesMin}" rel="stylesheet" />
+	
+	<spring:url value="/resources/css/select.dataTables.min.css" var="jquerySelectDataTablesMin" />
+	<link href="${jquerySelectDataTablesMin}" rel="stylesheet" />
+	
+	 
+	<spring:url value="/resources/editor/css/editor.dataTables.css" var="jqueryEditorDataTablesMin" />
+	<link href="${jqueryEditorDataTablesMin}" rel="stylesheet" />
+	
+	
+	<spring:url value="/resources/css/common.css" var="common" />
+	<link href="${common}" rel="stylesheet" />
+	
+	<spring:url value="/resources/js/receitasdespesas.js" var="receitasdespesasJS" />
+	<script src="${receitasdespesasJS}"></script>
+	
+	
+	<spring:url value="/resources/bootstrap/js/bootstrap.min.js" var="bootsJS" />		
+	<script src="${bootsJS}">	
+	</script>	
 	
 	
  	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/jquery-ui.css" />
-	
 
-	
-	<spring:url value="/resources/js/receitasdespesas.js" var="receitasdespesasJS" />
-	<script type="text/javascript">
-		if (typeof jQuery == 'undefined') {
-		    var script = document.createElement('script');
-		    script.type = "text/javascript";
-		    script.src = "${receitasdespesasJS}";
-		    document.getElementsByTagName('head')[0].appendChild(script);
-		}
-	</script>
-	
-	
-	<spring:url value="/resources/bootstrap/js/bootstrap.min.js" var="bootsJS" />		
-	<script type="text/javascript">
-		if (typeof jQuery == 'undefined') {
-		    var script = document.createElement('script');
-		    script.type = "text/javascript";
-		    script.src = "${bootsJS}";
-		    document.getElementsByTagName('head')[0].appendChild(script);
-		}
-	</script>	
-	
-	
 	
 	<title>Página Principal</title>
 </head>
@@ -124,17 +132,12 @@
 							</a>						
 						</li>
 					
-					<li>
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-							Financeiro
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="inicioReceitasDespesasControlador">Despesas e Receitas</a>
-							</li>
-						</ul>	
-				   </li>
+					
+					<li class="nav-item">
+        				<a class="nav-link" href="inicioReceitasDespesasControlador">Despesas e Receitas</a>
+     				 </li>
+					
+					
 					
 					
 				</ul>

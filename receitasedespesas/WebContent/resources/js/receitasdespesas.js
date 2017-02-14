@@ -1,24 +1,29 @@
-//var $j = jQuery.noConflict();
+var $j = jQuery.noConflict();
 jQuery.noConflict()(function($){
-	$('#botaoajax').click(function(){
-		$.ajax({
+	/*
+	$j('#botaoajax').click(function(){
+		$j.ajax({
 			type : 'GET' ,
 			url : './demo1.html',
 			success : function (result){
-				$('#result1').html(result);
+				$j('#result1').html(result);
 			}
 		});
 	});	
-	
-	$('#idItemCategoria').change(function(){
-		$.ajax({
+	*/
+	$j('#idItemCategoria').change(function(){
+		$j.ajax({
 			type : 'GET' ,
 			url : './listarSubCategoria.html',
-			data: { idLista: this.value }
+			data: { idLista: this.value },
+			success : function (result){
+				$j('#idListaItemSubCategoria').html(result);
+			}
 		});
 			
 	});
 	
-	$("#dataLancamento").datepicker();
+	$j("#dataLancamento").datepicker();
+
 });
 
