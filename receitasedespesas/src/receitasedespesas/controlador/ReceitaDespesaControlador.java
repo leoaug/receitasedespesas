@@ -40,7 +40,7 @@ import receitasedespesas.modelo.persistencia.repositorio.ReceitaDespesaRepositor
 import receitasedespesas.validador.ReceitaDespesaValidador;
 
 @Controller
-public class ReceitasDespesasControlador {
+public class ReceitaDespesaControlador {
 
 
 	
@@ -85,7 +85,6 @@ public class ReceitasDespesasControlador {
 			BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
 		
 		try {
-			
 		
 			if (result.hasErrors()) {
 				//redirectAttributes.addFlashAttribute("css", "error");
@@ -93,12 +92,15 @@ public class ReceitasDespesasControlador {
 			} else {
 				receitaDespesaRepositorio.save(receitaDespesa);	
 			
-				ObjectMapper objectMapper = new ObjectMapper();		
-				objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
-				model.addAttribute("listaReceitaDespesa",objectMapper.writeValueAsString(receitaDespesaRepositorio.findAll()));
 				
 				System.out.println(receitaDespesa);
 			}
+			
+			
+			ObjectMapper objectMapper = new ObjectMapper();		
+			objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
+			model.addAttribute("listaReceitaDespesa",objectMapper.writeValueAsString(receitaDespesaRepositorio.findAll()));
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +108,7 @@ public class ReceitasDespesasControlador {
 		model.addAttribute("listaReceitaDespesa", receitaDespesaRepositorio.findAll());
 		return "receitasedespesas";
 	}
-	
+	/*
 	@RequestMapping(value = "/carregarDespesasRepositorio" , method = {RequestMethod.POST,RequestMethod.GET})
 	public void carregarDespesasRepositorio(Model model){
 		System.out.println("teste");
@@ -117,20 +119,20 @@ public class ReceitasDespesasControlador {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//return "receitasedespesas";
 	}
-	
-	@RequestMapping(value = "/editorReceitaDespesa" , method = RequestMethod.POST)
-	public String  editorReceitaDespesa(@RequestParam String json,HttpServletResponse response){		
+	*/
+	@RequestMapping(value = "/editorReceitaDespesa" , method = {RequestMethod.POST})
+	@ResponseBody
+	public void  editorReceitaDespesa(@RequestBody ReceitaDespesa receitaDespesa){		
 		
 
 		try {
-			System.out.println(json);
+			System.out.println(receitaDespesa);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "redirect:inicioReceitasDespesasControlador";
+		//return new ModelAndView("receitasedespesas","receitaDespesa",new ReceitaDespesa()); 
 	}
 	
 	@RequestMapping(value = "/listarSubCategoria.html", method = {RequestMethod.POST,RequestMethod.GET})
