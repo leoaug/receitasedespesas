@@ -19,8 +19,8 @@
 
 	<context:spring-configured/>
 	
-	<mvc:annotation-driven enable-matrix-variables="true" content-negotiation-manager="contentNegotiationManager" />
-    
+	<mvc:annotation-driven  />
+   <!-- 
     <bean id="contentNegotiationManager"
     class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
     <property name="defaultContentType" value="application/json" />
@@ -31,7 +31,7 @@
     <property name="useJaf" value="false" />
 </bean>
     
-  
+   -->
    	<mvc:resources mapping="/resources/**" location="/resources/" />
    
    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">

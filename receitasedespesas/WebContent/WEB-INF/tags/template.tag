@@ -25,7 +25,15 @@
 	<spring:url value="/resources/js/dataTables.select.min.js" var="datatableSelect" />
 	<script src="${datatableSelect}" ></script>
 		
+	<spring:url value="/resources/js/jquery.maskMoney.min.js" var="maskMoneyJs" />
+	<script src="${maskMoneyJs}" ></script>	
 		
+	<spring:url value="/resources/js/jquery.maskedinput.min.js" var="maskInputJs" />
+	<script src="${maskInputJs}" ></script>		
+		
+	<spring:url value="/resources/js/jquery.numeric.min.js" var="numericJs" />
+	<script src="${numericJs}" ></script>		
+	
 	
 	<spring:url value="/resources/editor/css/dataTables.editor.css" var="jquerydataTablesEditor" />
 	<link href="${jquerydataTablesEditor}" rel="stylesheet" />
@@ -52,7 +60,7 @@
 	<spring:url value="/resources/css/common.css" var="common" />
 	<link href="${common}" rel="stylesheet" />
 	
-	<spring:url value="/resources/js/receitasdespesas.js" var="receitasdespesasJS" />
+	<spring:url value="/resources/js/receitasedespesas.js" var="receitasdespesasJS" />
 	<script src="${receitasdespesasJS}"></script>
 	
 	
@@ -61,9 +69,16 @@
 	</script>	
 	
 	
- 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/jquery-ui.css" />
-
+	<spring:url value="/resources/bootstrap/css/bootstrap.min.css" var="jqueryBootsMinCss" />
+	<link href="${jqueryBootsMinCss}" rel="stylesheet" />
+	
+ 	
+ 	<spring:url value="/resources/css/jquery-ui.css" var="jqueryUiCss" />
+	<link href="${jqueryUiCss}" rel="stylesheet" />
+ 	
+	<spring:url value="/resources/css/receitasedespesas.css" var="receitasedespesasCss" />
+	<link href="${receitasedespesasCss}" rel="stylesheet" />
+	
 	
 	<title>Página Principal</title>
 </head>
@@ -134,7 +149,7 @@
 					
 					
 					<li class="nav-item">
-        				<a class="nav-link" href="inicioReceitasDespesasControlador">Despesas e Receitas</a>
+        				<a class="nav-link" style="color:red; font-weight: bolder;" href="inicioReceitasDespesasControlador">Despesas e Receitas</a>
      				 </li>
 					
 					
