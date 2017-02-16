@@ -24,23 +24,37 @@ public class ReceitaDespesaValidador  implements Validator {
 	public void validate(Object target, Errors errors) {
 		ReceitaDespesa receitaDespesa = (ReceitaDespesa) target;
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "idObjeto", "NotEmpty.receitaDespesa.idObjeto");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "descricaoEvento", "NotEmpty.receitaDespesa.descricaoEvento");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "idEvento", "NotEmpty.receitaDespesa.idEvento");
-		/*
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "listaItemCategoria", "NotEmpty.receitaDespesa.listaItemCategoria");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "listaItemSubCategoria", "NotEmpty.receitaDespesa.listaItemSubCategoria");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "idStatus", "NotEmpty.receitaDespesa.idStatus");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "idCreditoDebito", "NotEmpty.receitaDespesa.idCreditoDebito");
-		*/
-
-		/*
-		if(receitaDespesa.getIdObjeto() == null || receitaDespesa.getIdObjeto() <= 0){
-			errors.rejectValue("idObjeto", "NotEmpty.receitaDespesa.idObjeto");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "comentario", "NotEmpty.receitaDespesa.comentario");
+		
+		if(receitaDespesa.getDescricaoEvento() == null || receitaDespesa.getDescricaoEvento().equals("")){
+			errors.rejectValue("descricaoEvento", "NotEmpty.receitaDespesa.descricaoEvento");
 		}
 		
 		if(receitaDespesa.getIdEvento() == null || receitaDespesa.getIdEvento() <= 0){
 			errors.rejectValue("idEvento", "NotEmpty.receitaDespesa.idEvento");
 		}
+		
+		if(receitaDespesa.getIdStatus() != null && receitaDespesa.getIdStatus().equals(0)){
+			errors.rejectValue("idStatus", "NotEmpty.receitaDespesa.idStatus");
+		}
+		
+		if(receitaDespesa.getIdCreditoDebito() != null && receitaDespesa.getIdCreditoDebito().equals(0)){
+			errors.rejectValue("idCreditoDebito", "NotEmpty.receitaDespesa.idCreditoDebito");
+		}
+		
+		
+	
+
+		/*
+		
+		
+		
 		*/
 		
 		/*

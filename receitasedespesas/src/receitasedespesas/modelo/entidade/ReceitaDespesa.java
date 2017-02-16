@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -56,11 +57,14 @@ public class ReceitaDespesa implements Serializable {
 	@Column(name = "id_evento")
 	private Integer idEvento;
 	
+	@Column(name = "desc_evento")
+	private String descricaoEvento;
+	
 	@Column(name = "id_status")
 	private Integer idStatus;
 	
 	@Column(name = "nr_valor")
-	private Integer nrValor;
+	private String nrValor;
 	
 	@Column(name = "dh_lancamento")
 	@Temporal(TemporalType.DATE)
@@ -79,6 +83,12 @@ public class ReceitaDespesa implements Serializable {
 	@Column(name = "dh_atualizacao")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataAtualizacao;
+	
+	@Transient
+	private String action;
+	
+	@Transient
+	private String dataLancamentoString;
 
 	public Integer getId() {
 		return id;
@@ -136,11 +146,11 @@ public class ReceitaDespesa implements Serializable {
 		this.idStatus = idStatus;
 	}
 
-	public Integer getNrValor() {
+	public String getNrValor() {
 		return nrValor;
 	}
 
-	public void setNrValor(Integer nrValor) {
+	public void setNrValor(String nrValor) {
 		this.nrValor = nrValor;
 	}
 
@@ -183,15 +193,41 @@ public class ReceitaDespesa implements Serializable {
 	public void setDataAtualizacao(Date dataAtualizacao) {
 		this.dataAtualizacao = dataAtualizacao;
 	}
+	
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getDataLancamentoString() {
+		return dataLancamentoString;
+	}
+
+	public void setDataLancamentoString(String dataLancamentoString) {
+		this.dataLancamentoString = dataLancamentoString;
+	}
+
+	public String getDescricaoEvento() {
+		return descricaoEvento;
+	}
+
+	public void setDescricaoEvento(String descricaoEvento) {
+		this.descricaoEvento = descricaoEvento;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((action == null) ? 0 : action.hashCode());
 		result = prime * result + ((comentario == null) ? 0 : comentario.hashCode());
 		result = prime * result + ((dataAtualizacao == null) ? 0 : dataAtualizacao.hashCode());
 		result = prime * result + ((dataCriacao == null) ? 0 : dataCriacao.hashCode());
 		result = prime * result + ((dataLancamento == null) ? 0 : dataLancamento.hashCode());
+		result = prime * result + ((dataLancamentoString == null) ? 0 : dataLancamentoString.hashCode());
+		result = prime * result + ((descricaoEvento == null) ? 0 : descricaoEvento.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((idCreditoDebito == null) ? 0 : idCreditoDebito.hashCode());
 		result = prime * result + ((idEvento == null) ? 0 : idEvento.hashCode());
@@ -213,6 +249,11 @@ public class ReceitaDespesa implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		ReceitaDespesa other = (ReceitaDespesa) obj;
+		if (action == null) {
+			if (other.action != null)
+				return false;
+		} else if (!action.equals(other.action))
+			return false;
 		if (comentario == null) {
 			if (other.comentario != null)
 				return false;
@@ -232,6 +273,16 @@ public class ReceitaDespesa implements Serializable {
 			if (other.dataLancamento != null)
 				return false;
 		} else if (!dataLancamento.equals(other.dataLancamento))
+			return false;
+		if (dataLancamentoString == null) {
+			if (other.dataLancamentoString != null)
+				return false;
+		} else if (!dataLancamentoString.equals(other.dataLancamentoString))
+			return false;
+		if (descricaoEvento == null) {
+			if (other.descricaoEvento != null)
+				return false;
+		} else if (!descricaoEvento.equals(other.descricaoEvento))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -281,14 +332,7 @@ public class ReceitaDespesa implements Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "ReceitaDespesa [id=" + id + ", idCreditoDebito=" + idCreditoDebito + ", listaItemCategoria="
-				+ listaItemCategoria + ", listaItemSubCategoria=" + listaItemSubCategoria + ", idObjeto=" + idObjeto
-				+ ", idEvento=" + idEvento + ", idStatus=" + idStatus + ", nrValor=" + nrValor + ", dataLancamento="
-				+ dataLancamento + ", comentario=" + comentario + ", login=" + login + ", dataCriacao=" + dataCriacao
-				+ ", dataAtualizacao=" + dataAtualizacao + "]";
-	}
+
 	
 	
 }

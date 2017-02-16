@@ -185,7 +185,6 @@ public class ListaItem implements Serializable {
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lista == null) ? 0 : lista.hashCode());
-		result = prime * result + ((listaItemPai == null) ? 0 : listaItemPai.hashCode());
 		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		result = prime * result + ((nativo == null) ? 0 : nativo.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());

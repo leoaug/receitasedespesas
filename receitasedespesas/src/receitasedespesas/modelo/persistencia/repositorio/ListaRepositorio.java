@@ -1,11 +1,11 @@
 package receitasedespesas.modelo.persistencia.repositorio;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import receitasedespesas.modelo.entidade.Lista;
 
 @Repository
-public interface ListaRepositorio extends CrudRepository<Lista,Integer> {
+public interface ListaRepositorio extends JpaRepository<Lista,Integer> {
 
 }

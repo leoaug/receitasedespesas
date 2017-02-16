@@ -1,27 +1,22 @@
 package receitasedespesas.controlador;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.annotations.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.init.ResourceReader.Type;
-import org.springframework.http.MediaType;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.validation.support.BindingAwareModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,10 +28,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import receitasedespesas.bean.BeanSelect;
 import receitasedespesas.modelo.entidade.ListaItem;
 import receitasedespesas.modelo.entidade.ReceitaDespesa;
 import receitasedespesas.modelo.persistencia.repositorio.ListaItemRepositorio;
 import receitasedespesas.modelo.persistencia.repositorio.ReceitaDespesaRepositorio;
+import receitasedespesas.util.DataUtil;
 import receitasedespesas.validador.ReceitaDespesaValidador;
 
 @Controller
@@ -63,77 +60,131 @@ public class ReceitaDespesaControlador {
 	public String index(Model model) throws Exception  {
 		try {
 			
-			model.addAttribute("listaItemCategoria", listaItemRepositorio.findAll());		
-			model.addAttribute("listaItemSubCategoria",new ArrayList<ListaItem>());		
-			model.addAttribute("receitaDespesa",new ReceitaDespesa());
-				
-			ObjectMapper objectMapper = new ObjectMapper();		
-			objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
-			//objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES ,false);
-			model.addAttribute("listaReceitaDespesa",objectMapper.writeValueAsString(receitaDespesaRepositorio.findAll()));
-			
-			System.out.println(objectMapper.writeValueAsString(receitaDespesaRepositorio.findAll()));
-			
+			this.init(model, new ReceitaDespesa());
+					
 			return "receitasedespesas";
 		} catch (Exception e) {
 			throw e;
 		}
 	}
+	
+	public void init(Model model,ReceitaDespesa receitaDespesa){
+		try {
+			List <ListaItem> listaItens = (List<ListaItem>) listaItemRepositorio.findAll();
+			model.addAttribute("listaItemCategoria", listaItens);		
+			model.addAttribute("listaItemSubCategoria",new ArrayList<ListaItem>());		
+			model.addAttribute("receitaDespesa",receitaDespesa);
+				
+			ObjectMapper objectMapper = new ObjectMapper();		
+			objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
+			//objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES ,false);
+			
+			List <ReceitaDespesa> lista = (List<ReceitaDespesa>) receitaDespesaRepositorio.findAll();
+			for(ReceitaDespesa receitaDespesaList: lista){
+				receitaDespesaList.setDataLancamentoString(DataUtil.dateToString(receitaDespesaList.getDataLancamento(), "dd/MM/yyyy"));
+			}
+			
+			model.addAttribute("listaReceitaDespesa",objectMapper.writeValueAsString(lista));
+			
+			carregarJsonListaItemCategoriaSelect(model,listaItens);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	@RequestMapping(value = "/processForm.html", params = "salvar", method = {RequestMethod.POST,RequestMethod.GET})
-	public String salvar(@ModelAttribute("receitaDespesa") @Validated ReceitaDespesa receitaDespesa,
+	public ModelAndView salvar(@ModelAttribute("receitaDespesa") @Validated ReceitaDespesa receitaDespesa,
 			BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
 		
 		try {
 		
 			if (result.hasErrors()) {
-				//redirectAttributes.addFlashAttribute("css", "error");
-				redirectAttributes.addFlashAttribute("css", "error");
+				model.addAttribute("msgAviso", "Campos com (*) são Obrigatórios");
 			} else {
+				
+				receitaDespesa.setDataCriacao(new Date(System.currentTimeMillis()));
+				receitaDespesa.setListaItemCategoria(listaItemRepositorio.findOne(receitaDespesa.getListaItemCategoria().getId()));  
+				receitaDespesa.setListaItemSubCategoria(listaItemRepositorio.findOne(receitaDespesa.getListaItemSubCategoria().getId()));		
+				receitaDespesa.setDataLancamento(DataUtil.stringToDate(receitaDespesa.getDataLancamentoString(), "dd/MM/yyyy") );
+							
 				receitaDespesaRepositorio.save(receitaDespesa);	
 			
+				model.addAttribute("receitaDespesa",receitaDespesa);
 				
-				System.out.println(receitaDespesa);
+				model.addAttribute("msgSucesso", "Receita de Despesa salvo.");
+				
+				
 			}
 			
 			
-			ObjectMapper objectMapper = new ObjectMapper();		
-			objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
-			model.addAttribute("listaReceitaDespesa",objectMapper.writeValueAsString(receitaDespesaRepositorio.findAll()));
-			
+			init(model,receitaDespesa);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("msgErro", "Erro ao salvar a Receita de Despesa");
 		}
-		model.addAttribute("listaReceitaDespesa", receitaDespesaRepositorio.findAll());
-		return "receitasedespesas";
+		return new ModelAndView("receitasedespesas","receitaDespesa",receitaDespesa);
 	}
-	/*
-	@RequestMapping(value = "/carregarDespesasRepositorio" , method = {RequestMethod.POST,RequestMethod.GET})
-	public void carregarDespesasRepositorio(Model model){
-		System.out.println("teste");
-		try {
-			ObjectMapper objectMapper = new ObjectMapper();		
-			objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
-			model.addAttribute("listaReceitaDespesa",objectMapper.writeValueAsString(receitaDespesaRepositorio.findAll()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+	
+	@RequestMapping(value = "/processForm.html", params = "novo", method = {RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView novo(Model model){
+		init(model, new ReceitaDespesa());
+		return new ModelAndView("receitasedespesas","receitaDespesa",new ReceitaDespesa());
 	}
-	*/
-	@RequestMapping(value = "/editorReceitaDespesa" , method = {RequestMethod.POST})
+	
+	@RequestMapping(value = "/editarOuExcluirReceitaDespesa" , method = {RequestMethod.POST})
 	@ResponseBody
-	public void  editorReceitaDespesa(@RequestBody ReceitaDespesa receitaDespesa){		
+	public ModelAndView  editarOuExcluirReceitaDespesa(@RequestBody ReceitaDespesa receitaDespesa,Model model){		
 		
 
 		try {
+			if(receitaDespesa.getAction().equals("edit")){
+				receitaDespesa.setDataAtualizacao(new Date(System.currentTimeMillis()));
+				receitaDespesa.setListaItemCategoria(listaItemRepositorio.findOne(receitaDespesa.getListaItemCategoria().getId()));  
+				receitaDespesa.setListaItemSubCategoria(listaItemRepositorio.findOne(receitaDespesa.getListaItemSubCategoria().getId()));		
+				receitaDespesa.setDataLancamento(DataUtil.stringToDate(receitaDespesa.getDataLancamentoString(), "dd/MM/yyyy") );
+				
+				receitaDespesaRepositorio.save(receitaDespesa);
+			} else {
+				receitaDespesaRepositorio.delete(receitaDespesa);
+			}
+			
+			init(model,receitaDespesa);
+			
 			System.out.println(receitaDespesa);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//return new ModelAndView("receitasedespesas","receitaDespesa",new ReceitaDespesa()); 
+		return new ModelAndView("receitasedespesas","receitaDespesa",receitaDespesa); 
 	}
+	
+
+
+	public void carregarJsonListaItemCategoriaSelect(Model model,List <ListaItem> listaItens ) throws Exception {
+		try {
+			
+			ObjectMapper objectMapper = new ObjectMapper();		
+			objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
+			
+			List <BeanSelect> lista = new ArrayList<BeanSelect>();
+			for(ListaItem listaItem :  listaItens){
+				BeanSelect beanSelect = new BeanSelect();
+				beanSelect.setValue(listaItem.getId());
+				beanSelect.setLabel(listaItem.getDescricao());
+				
+				lista.add(beanSelect);
+			}
+			
+			model.addAttribute("listaItemCategoriaJson", objectMapper.writeValueAsString(lista)) ;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
 	
 	@RequestMapping(value = "/listarSubCategoria.html", method = {RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
@@ -146,7 +197,7 @@ public class ReceitaDespesaControlador {
 		StringBuilder builder = new StringBuilder();
 		builder.append("<label for=\"listaItemSubCategoria.id\">Sub Categoria</label>");
 		builder.append("<select id=\"idListaItemSubCategoria\" name=\"listaItemSubCategoria.id\" class=\"form-control\">"); 
-			builder.append("<option value=\"NONE\">Selecionar</option>");
+			builder.append("<option label=\"NONE\" value=\"0\">Selecionar</option>");
 			builder.append("<option value=\"1\">boraaa</option>");
 			builder.append("<option value=\"2\">verrr</option>");
 		builder.append("</select>");
