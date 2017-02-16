@@ -2,16 +2,10 @@ package receitasedespesas.controlador;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import receitasedespesas.bean.BeanSelect;
 import receitasedespesas.modelo.entidade.ListaItem;
 import receitasedespesas.modelo.entidade.ReceitaDespesa;
@@ -70,7 +62,8 @@ public class ReceitaDespesaControlador {
 	
 	public void init(Model model,ReceitaDespesa receitaDespesa){
 		try {
-			List <ListaItem> listaItens = (List<ListaItem>) listaItemRepositorio.findAll();
+			List <ListaItem> listaItens = (List<ListaItem>) listaItemRepositorio.consultarListaItemPorListaNome("lista_categoria");
+			
 			model.addAttribute("listaItemCategoria", listaItens);		
 			model.addAttribute("listaItemSubCategoria",new ArrayList<ListaItem>());		
 			model.addAttribute("receitaDespesa",receitaDespesa);
@@ -82,6 +75,8 @@ public class ReceitaDespesaControlador {
 			List <ReceitaDespesa> lista = (List<ReceitaDespesa>) receitaDespesaRepositorio.findAll();
 			for(ReceitaDespesa receitaDespesaList: lista){
 				receitaDespesaList.setDataLancamentoString(DataUtil.dateToString(receitaDespesaList.getDataLancamento(), "dd/MM/yyyy"));
+				receitaDespesaList.setDataCriacaoString(DataUtil.dateToString(receitaDespesaList.getDataCriacao(), "dd/MM/yyyy"));
+				receitaDespesaList.setDataAtualizacaoString(receitaDespesaList.getDataAtualizacao() == null ? null : DataUtil.dateToString(receitaDespesaList.getDataAtualizacao(), "dd/MM/yyyy"));
 			}
 			
 			model.addAttribute("listaReceitaDespesa",objectMapper.writeValueAsString(lista));
@@ -92,6 +87,19 @@ public class ReceitaDespesaControlador {
 		}
 	}
 	
+	public void limparCampos(ReceitaDespesa receitaDespesa){
+		
+		try{
+			
+			receitaDespesa.setComentario("");
+			receitaDespesa.setDescricaoEvento("");
+			receitaDespesa.setIdEvento(null);
+			receitaDespesa.getListaItemCategoria().setId(0);
+			receitaDespesa.getListaItemSubCategoria().setId(0);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
 	@RequestMapping(value = "/processForm.html", params = "salvar", method = {RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView salvar(@ModelAttribute("receitaDespesa") @Validated ReceitaDespesa receitaDespesa,
@@ -117,6 +125,7 @@ public class ReceitaDespesaControlador {
 				
 			}
 			
+			limparCampos(receitaDespesa);
 			
 			init(model,receitaDespesa);
 			
@@ -136,11 +145,11 @@ public class ReceitaDespesaControlador {
 	
 	@RequestMapping(value = "/editarOuExcluirReceitaDespesa" , method = {RequestMethod.POST})
 	@ResponseBody
-	public ModelAndView  editarOuExcluirReceitaDespesa(@RequestBody ReceitaDespesa receitaDespesa,Model model){		
+	public ModelAndView editarOuExcluirReceitaDespesa(@RequestBody ReceitaDespesa receitaDespesa,Model model){		
 		
 
 		try {
-			if(receitaDespesa.getAction().equals("edit")){
+			if(receitaDespesa.getAction() != null && receitaDespesa.getAction().equals("edit")){
 				receitaDespesa.setDataAtualizacao(new Date(System.currentTimeMillis()));
 				receitaDespesa.setListaItemCategoria(listaItemRepositorio.findOne(receitaDespesa.getListaItemCategoria().getId()));  
 				receitaDespesa.setListaItemSubCategoria(listaItemRepositorio.findOne(receitaDespesa.getListaItemSubCategoria().getId()));		
@@ -148,7 +157,7 @@ public class ReceitaDespesaControlador {
 				
 				receitaDespesaRepositorio.save(receitaDespesa);
 			} else {
-				receitaDespesaRepositorio.delete(receitaDespesa);
+				receitaDespesaRepositorio.delete(receitaDespesaRepositorio.findOne(receitaDespesa.getId()) );
 			}
 			
 			init(model,receitaDespesa);
@@ -188,18 +197,19 @@ public class ReceitaDespesaControlador {
 	
 	@RequestMapping(value = "/listarSubCategoria.html", method = {RequestMethod.POST,RequestMethod.GET})
 	@ResponseBody
-	public String listarSubCategoria(@RequestParam("idLista") String request,Model model){
+	public String listarSubCategoria(@RequestParam("idLista") String idLista,Model model){
 		
-		Map<Integer,String> listas = new LinkedHashMap<Integer,String>();
-		listas.put(1,"aeeeeee");
+		
 
+		List <ListaItem> listaItens = (List<ListaItem>) listaItemRepositorio.consultarListaItemPorListaItemPai(Integer.parseInt(idLista));
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("<label for=\"listaItemSubCategoria.id\">Sub Categoria</label>");
 		builder.append("<select id=\"idListaItemSubCategoria\" name=\"listaItemSubCategoria.id\" class=\"form-control\">"); 
 			builder.append("<option label=\"NONE\" value=\"0\">Selecionar</option>");
-			builder.append("<option value=\"1\">boraaa</option>");
-			builder.append("<option value=\"2\">verrr</option>");
+			for(ListaItem listaItem : listaItens){
+				builder.append("<option value=\""+listaItem.getId()+"\">"+listaItem.getDescricao()+"</option>");
+			}
 		builder.append("</select>");
 		
 		
